@@ -79,7 +79,7 @@ public class Blitz {
         Step step;
         Event event;
         for (int i = 0; i < events.size(); i++) {
-            event = events.get(events.size() - i);
+            event = events.get(events.size() - i - 1);
             for (int j = 0; j < steps.size(); j++) {
                 if(event.getStepId() == steps.get(j).getStepId()){
                     step = steps.get(j);
