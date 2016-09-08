@@ -60,10 +60,10 @@ public class Blitz {
         }
     }
     public static void getUsersList(){
-        boolean isTrue = false;
+        boolean isTrue = true;
         for (int i = 0; i < events.size(); i++) {
             for (int j = 0; j < users.size(); j++) {
-                if(users.get(i).getId() == events.get(i).getUserId()){
+                if(users.get(i - 1).getId() == events.get(i).getUserId()){
                     isTrue = false;
                     break;
                 }
