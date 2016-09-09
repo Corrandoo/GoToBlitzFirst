@@ -93,7 +93,7 @@ public class Blitz {
                 if(event.getStepId() == steps.get(j).getStepId()){
                     step = steps.get(j);
                     for (int k = 0; k < users.size(); k++) {
-                        if(event.getUserId() == users.get(k).getId() && (users.get(k).getScore() <= 24)){
+                        if(!(event.getUserId() == users.get(k).getId() && (users.get(k).getScore() >= 24))){
                             user = users.get(k);
                             user.setScore(user.getScore() + step.getStepCost());
                             user.setLastTime(event.getTime());
