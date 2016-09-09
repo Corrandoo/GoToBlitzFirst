@@ -23,6 +23,7 @@ public class Blitz {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
             String s;
+            reader.readLine();
             while((s = reader.readLine()) != null){
                 String[] str = s.split(",");
                 int userId = Integer.parseInt(str[0]);
@@ -43,8 +44,9 @@ public class Blitz {
     public static void structureFileToList(String fileName){
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
-            while(reader.readLine() != null){
-                String s = reader.readLine();
+            String s;
+            reader.readLine();
+            while((s = reader.readLine()) != null){
                 String[] str = s.split(",");
                 int stepId = Integer.parseInt(str[5]);
                 int stepCost = Integer.parseInt(str[8]);
