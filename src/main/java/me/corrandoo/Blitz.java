@@ -105,9 +105,23 @@ public class Blitz {
         users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
     }
     public static void getTenUsers(){
-        for (int i = 0; i < 10; i++) {
-            System.out.print(users.get(i).getId() + ",");
+        int i = 0;
+        int j = 0;
+        while(i < 10) {
+            if((users.get(j).getScore() >= 24) && (i < 9)){
+                System.out.print(users.get(j).getId() + ",");
+                i++;
+                j++;
+            }
+            else if(i == 9) {
+                System.out.println(users.get(j).getId());
+                i++;
+            }
+            else{
+                j++;
+            }
         }
+
     }
 
 }
