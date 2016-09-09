@@ -31,6 +31,11 @@ public class User {
     }
 
     public int getCourseTime() {
+        if((lastTime == 0) && (firstTime == 0)){
+        }
+        else{
+            int courseTime = lastTime - firstTime;
+        }
         return courseTime;
     }
 
