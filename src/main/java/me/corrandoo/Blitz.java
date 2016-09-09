@@ -3,6 +3,7 @@ package me.corrandoo;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 public class Blitz {
     static List<User> topUsers = new ArrayList<User>();
@@ -15,9 +16,7 @@ public class Blitz {
         structureFileToList("src/main/resources/course-217-structure.csv");
         getUsersList();
         getTopUsers();
-        for(User user : topUsers){
-            System.out.println(user.getId());
-        }
+        getTenUsers();
     }
     public static void eventsFileToList(String fileName){
         try {
@@ -63,21 +62,23 @@ public class Blitz {
     }
     public static void getUsersList(){
         boolean isUserTrue = false;
-        for (int i = 0; i < events.size(); i++) {
-            if((users.size() == 0) && (i == 0))
-                users.add(new User(events.get(i).getUserId()));
+        Event event;
+        for (int i = 1; i <= events.size(); i++) {
+            event = events.get(events.size() - i);
+            if((users.size() == 0))
+                users.add(new User(event.getUserId(), event.getTime()));
             else if(users.size() > 0){
                 for (int j = 0; j < users.size(); j++) {
-                    if(users.get(j).getId() == events.get(i).getUserId()){
+                    if(users.get(j).getId() == event.getUserId()){
                         isUserTrue = false;
                         break;
                     }
-                    else if(users.get(j).getId() != events.get(i).getUserId())
+                    else if(users.get(j).getId() != event.getUserId())
                         isUserTrue = true;
                 }
             }
             if(isUserTrue){
-                users.add(new User(events.get(i).getUserId()));
+                users.add(new User(event.getUserId(), event.getTime()));
             }
         }
     }
@@ -92,22 +93,22 @@ public class Blitz {
                 if(event.getStepId() == steps.get(j).getStepId()){
                     step = steps.get(j);
                     for (int k = 0; k < users.size(); k++) {
-                        if(event.getUserId() == users.get(k).getId()){
+                        if(event.getUserId() == users.get(k).getId() && (users.get(k).getScore() <= 24)){
                             user = users.get(k);
                             user.setScore(user.getScore() + step.getStepCost());
+                            user.setLastTime(event.getTime());
                             users.set(k, user);
-                            if(topUsers.size() > 10)
-                                break;
-                            if(users.get(k).getScore() >= 24){
-                                topUsers.add(users.get(k));
-                            }
-                            if(topUsers.size() > 10)
-                                break;
                         }
                     }
                 }
 
             }
+        }
+        users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
+    }
+    public static void getTenUsers(){
+        for (int i = 0; i < 10; i++) {
+            System.out.print(users.get(i).getId() + ",");
         }
     }
 
