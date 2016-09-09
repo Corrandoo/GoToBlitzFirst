@@ -93,9 +93,15 @@ public class Blitz {
                 if(event.getStepId() == steps.get(j).getStepId()){
                     step = steps.get(j);
                     for (int k = 0; k < users.size(); k++) {
-                        if((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() <= 24))){
+                        if((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() < 24))){
                             users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
                             users.get(k).setLastTime(event.getTime());
+
+                        }
+                        else if((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() == 24)) && !users.get(k).isCompleted()){
+                            users.get(k).setFinalTime(event.getTime());
+                            users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                            users.get(k).setCompleted(true);
                         }
                     }
                 }
@@ -108,12 +114,12 @@ public class Blitz {
         int i = 0;
         int j = 0;
         while(i < 10) {
-            if((users.get(j).getScore() >= 24) && (i < 9)){
+            if((users.get(j).isCompleted()) && (i < 9)){
                 System.out.print(users.get(j).getId() + ",");
                 i++;
                 j++;
             }
-            else if(i == 9) {
+            else if((i == 9) && (users.get(j).isCompleted())) {
                 System.out.println(users.get(j).getId());
                 i++;
             }
