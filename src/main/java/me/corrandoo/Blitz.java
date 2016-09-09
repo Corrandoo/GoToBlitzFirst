@@ -34,10 +34,10 @@ public class Blitz {
             }
         }
         catch(FileNotFoundException e){
-            System.out.println("Данный файл не найден.");
+            System.out.println("Данный файл лога не найден.");
         }
         catch(IOException e){
-            System.out.println("Ошибка при работе с файлом.");
+            System.out.println("Ошибка при обработке файла лога.");
         }
     }
     public static void structureFileToList(String fileName){
@@ -53,28 +53,34 @@ public class Blitz {
             }
         }
         catch(FileNotFoundException e){
-            System.out.println("Данный файл не найден.");
+            System.out.println("Данный файл структуры курса не найден.");
         }
         catch(IOException e){
-            System.out.println("Ошибка при работе с файлом.");
+            System.out.println("Ошибка при обработке файла структуры курса.");
         }
     }
+
     public static void getUsersList(){
-        boolean isTrue = true;
+        boolean isUserTrue = false;
         for (int i = 0; i < events.size(); i++) {
-            for (int j = 0; j < users.size(); j++) {
-                if(users.get(i - 1).getId() == events.get(i).getUserId()){
-                    isTrue = false;
-                    break;
-                }
-                else{
-                    isTrue = true;
+            if((users.size() == 0) && (i == 0))
+                users.add(new User(events.get(i).getUserId()));
+            else if(users.size() > 0){
+                for (int j = 0; j < users.size(); j++) {
+                    if(users.get(j).getId() == events.get(i).getUserId()){
+                        isUserTrue = false;
+                        break;
+                    }
+                    else if(users.get(j).getId() != events.get(i).getUserId())
+                        isUserTrue = true;
                 }
             }
-            if(isTrue)
+            if(isUserTrue){
                 users.add(new User(events.get(i).getUserId()));
+            }
         }
     }
+
     public static void getTopUsers(){
         Step step;
         Event event;
@@ -86,6 +92,8 @@ public class Blitz {
                     for (int k = 0; k < users.size(); k++) {
                         if(event.getUserId() == users.get(k).getId()){
                             users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                            if(topUsers.size() > 10)
+                                break;
                             if(users.get(k).getScore() >= 24){
                                 topUsers.add(users.get(k));
                             }
