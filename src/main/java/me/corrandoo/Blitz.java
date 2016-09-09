@@ -22,8 +22,8 @@ public class Blitz {
     public static void eventsFileToList(String fileName){
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
-            while(reader.readLine() != null){
-                String s = reader.readLine();
+            String s;
+            while((s = reader.readLine()) != null){
                 String[] str = s.split(",");
                 int userId = Integer.parseInt(str[0]);
                 String actionType = str[1];
@@ -59,7 +59,6 @@ public class Blitz {
             System.out.println("Ошибка при обработке файла структуры курса.");
         }
     }
-
     public static void getUsersList(){
         boolean isUserTrue = false;
         for (int i = 0; i < events.size(); i++) {
@@ -84,14 +83,17 @@ public class Blitz {
     public static void getTopUsers(){
         Step step;
         Event event;
-        for (int i = 0; i < events.size(); i++) {
-            event = events.get(events.size() - i - 1);
+        User user;
+        for (int i = 1; i <= events.size(); i++) {
+            event = events.get(events.size() - i);
             for (int j = 0; j < steps.size(); j++) {
                 if(event.getStepId() == steps.get(j).getStepId()){
                     step = steps.get(j);
                     for (int k = 0; k < users.size(); k++) {
                         if(event.getUserId() == users.get(k).getId()){
-                            users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                            user = users.get(k);
+                            user.setScore(user.getScore() + step.getStepCost());
+                            users.set(k, user);
                             if(topUsers.size() > 10)
                                 break;
                             if(users.get(k).getScore() >= 24){
