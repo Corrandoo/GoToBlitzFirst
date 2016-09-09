@@ -16,6 +16,7 @@ public class Blitz {
         structureFileToList("src/main/resources/course-217-structure.csv");
         getUsersList();
         getTopUsers();
+        users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
         getTenUsers();
     }
     public static void eventsFileToList(String fileName){
@@ -104,7 +105,6 @@ public class Blitz {
 
             }
         }
-        users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
     }
     public static void getTenUsers(){
         for (int i = 0; i < 10; i++) {
