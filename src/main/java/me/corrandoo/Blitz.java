@@ -89,43 +89,39 @@ public class Blitz {
         User user;
         for (int i = 1; i <= events.size(); i++) {
             event = events.get(events.size() - i);
-            for (int j = 0; j < steps.size(); j++) {
-                if(event.getStepId() == steps.get(j).getStepId()){
-                    step = steps.get(j);
-                    for (int k = 0; k < users.size(); k++) {
-                        if((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() < 24))){
-                            users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                            users.get(k).setLastTime(event.getTime());
+            if (event.getEventType().equals("passed")) {
+                for (int j = 0; j < steps.size(); j++) {
+                    if (event.getStepId() == steps.get(j).getStepId()) {
+                        step = steps.get(j);
+                        for (int k = 0; k < users.size(); k++) {
+                            if ((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() < 24))) {
+                                users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                                users.get(k).setLastTime(event.getTime());
 
-                        }
-                        else if((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() == 24)) && !users.get(k).isCompleted()){
-                            users.get(k).setFinalTime(event.getTime());
-                            users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                            users.get(k).setCompleted(true);
+                            } else if ((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() >= 24)) && !users.get(k).isCompleted()) {
+                                users.get(k).setFinalTime(event.getTime());
+                                users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                                users.get(k).setCompleted(true);
+                            }
                         }
                     }
-                }
 
+                }
             }
         }
         users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
     }
     public static void getTenUsers(){
-        int i = 0;
         int j = 0;
-        while(i < 10) {
-            if((users.get(j).isCompleted()) && (i < 9)){
-                System.out.print(users.get(j).getId() + ",");
-                i++;
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).isCompleted()){
+                System.out.print(users.get(i).getId());
                 j++;
+                if(j == 10)
+                    break;
+                System.out.print(",");
             }
-            else if((i == 9) && (users.get(j).isCompleted())) {
-                System.out.println(users.get(j).getId());
-                i++;
-            }
-            else{
-                j++;
-            }
+
         }
 
     }
