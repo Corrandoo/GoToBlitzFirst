@@ -3,10 +3,8 @@ package me.corrandoo;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Comparator;
 
 public class Blitz {
-    static List<User> topUsers = new ArrayList<User>();
     static List<Event> events = new ArrayList<Event>();
     static List<Step> steps = new ArrayList<Step>();
     static List<User> users = new ArrayList<User>();
@@ -15,7 +13,8 @@ public class Blitz {
         eventsFileToList("src/main/resources/course-217-events.csv");
         structureFileToList("src/main/resources/course-217-structure.csv");
         getUsersList();
-        getTopUsers();
+        getListOnTop();
+        users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
         getTenUsers();
     }
     public static void eventsFileToList(String fileName){
@@ -83,10 +82,9 @@ public class Blitz {
         }
     }
 
-    public static void getTopUsers(){
+    public static void getListOnTop(){
         Step step;
         Event event;
-        User user;
         for (int i = 1; i <= events.size(); i++) {
             event = events.get(events.size() - i);
             if (event.getEventType().equals("passed")) {
@@ -98,10 +96,14 @@ public class Blitz {
                                 users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
                                 users.get(k).setLastTime(event.getTime());
 
-                            } else if ((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() >= 24)) && !users.get(k).isCompleted()) {
+                            } else if ((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() == 24)) && !users.get(k).isCompleted()) {
                                 users.get(k).setFinalTime(event.getTime());
                                 users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
                                 users.get(k).setCompleted(true);
+                            }
+                            else if((event.getUserId() == users.get(k).getId()) && (users.get(k).getScore() >= 24)){
+                                users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                                users.get(k).setLastTime(event.getTime());
                             }
                         }
                     }
@@ -109,7 +111,7 @@ public class Blitz {
                 }
             }
         }
-        users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
+
     }
     public static void getTenUsers(){
         int j = 0;
