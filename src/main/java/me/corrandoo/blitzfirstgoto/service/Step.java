@@ -1,4 +1,4 @@
-package me.corrandoo;
+package me.corrandoo.blitzfirstgoto.service;
 
 public class Step {
     private int stepId;

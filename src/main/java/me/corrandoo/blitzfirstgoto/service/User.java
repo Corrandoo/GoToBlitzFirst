@@ -1,9 +1,9 @@
-package me.corrandoo;
+package me.corrandoo.blitzfirstgoto.service;
 
 public class User {
     private int id;
     private int firstTime;
-    private int lastTime;
+    private int lastTime = 0;
     private int finalTime;
     private int courseTime;
     private int score = 0;
@@ -47,7 +47,15 @@ public class User {
     }
 
     public int getCourseTime() {
-        return finalTime - firstTime;
+        return lastTime - firstTime;
+    }
+
+    public int getLastTime() {
+        return lastTime;
+    }
+
+    public int getFirstTime() {
+        return firstTime;
     }
 }
 

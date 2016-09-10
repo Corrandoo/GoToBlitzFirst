@@ -1,4 +1,4 @@
-package me.corrandoo;
+package me.corrandoo.blitzfirstgoto.service;
 
 public class Event {
     private int userId;

@@ -1,13 +1,21 @@
-package me.corrandoo;
+package me.corrandoo.blitzfirstgoto;
+
+import me.corrandoo.blitzfirstgoto.service.Event;
+import me.corrandoo.blitzfirstgoto.service.Step;
+import me.corrandoo.blitzfirstgoto.service.User;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Blitz {
-    static List<Event> events = new ArrayList<Event>();
-    static List<Step> steps = new ArrayList<Step>();
-    static List<User> users = new ArrayList<User>();
+    private static List<Event> events = new ArrayList<Event>();
+    private static List<Step> steps = new ArrayList<Step>();
+    private static List<User> users = new ArrayList<User>();
+    private static Map<Integer, Integer> userMap = new HashMap<Integer, Integer>();
+
 
     public static void main(String[] args) {
         eventsFileToList("src/main/resources/course-217-events.csv");
@@ -16,6 +24,7 @@ public class Blitz {
         getListOnTop();
         users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
         getTenUsers();
+        getTimeForFuckingNumbers();
     }
     public static void eventsFileToList(String fileName){
         try {
@@ -64,8 +73,10 @@ public class Blitz {
         Event event;
         for (int i = 1; i <= events.size(); i++) {
             event = events.get(events.size() - i);
-            if((users.size() == 0))
+            if((users.size() == 0)) {
+                userMap.put(event.getUserId(), users.size());
                 users.add(new User(event.getUserId(), event.getTime()));
+            }
             else if(users.size() > 0){
                 for (int j = 0; j < users.size(); j++) {
                     if(users.get(j).getId() == event.getUserId()){
@@ -77,6 +88,7 @@ public class Blitz {
                 }
             }
             if(isUserTrue){
+                userMap.put(event.getUserId(), users.size());
                 users.add(new User(event.getUserId(), event.getTime()));
             }
         }
@@ -92,26 +104,23 @@ public class Blitz {
                     if (event.getStepId() == steps.get(j).getStepId()) {
                         step = steps.get(j);
                         for (int k = 0; k < users.size(); k++) {
-                            if ((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() < 24))) {
-                                users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                                users.get(k).setLastTime(event.getTime());
-
-                            } else if ((event.getUserId() == users.get(k).getId() && (users.get(k).getScore() == 24)) && !users.get(k).isCompleted()) {
-                                users.get(k).setFinalTime(event.getTime());
-                                users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                                users.get(k).setCompleted(true);
-                            }
-                            else if((event.getUserId() == users.get(k).getId()) && (users.get(k).getScore() >= 24)){
-                                users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                                users.get(k).setLastTime(event.getTime());
+                            if (event.getUserId() == users.get(k).getId()) {
+                                if (users.get(k).getScore() < 24) {
+                                    users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                                    users.get(k).setLastTime(event.getTime());
+                                } else if ((users.get(k).getScore() == 24) && !users.get(k).isCompleted()) {
+                                    //users.get(k).setLastTime(event.getTime());
+                                    users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                                    users.get(k).setCompleted(true);
+                                } else if (users.get(k).getScore() >= 24) {
+                                    users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
+                                }
                             }
                         }
                     }
-
                 }
             }
         }
-
     }
     public static void getTenUsers(){
         int j = 0;
@@ -125,8 +134,18 @@ public class Blitz {
             }
 
         }
+        System.out.println();
+        System.out.println();
 
     }
+    public static void getTimeForFuckingNumbers(){
+        int j = 0;
+        for (int i = 0; i < users.size(); i++) {
+            if(users.get(i).getId() == 972 || users.get(i).getId() == 4280 || users.get(i).getId() == 1291 ){
+                System.out.println(users.get(i).getId() + " " + users.get(i).getCourseTime() + " " + users.get(i).getFirstTime() + " " + users.get(i).getLastTime());
+            }
+        }
+    }
+
 
 }
-///
