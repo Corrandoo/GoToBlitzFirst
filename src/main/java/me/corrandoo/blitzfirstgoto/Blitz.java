@@ -21,6 +21,7 @@ public class Blitz {
     public static void main(String[] args) {
         eventsFileToList("src/main/resources/course-217-events.csv");
         structureFileToList("src/main/resources/course-217-structure.csv");
+        events.sort((o1, o2) -> o1.getTime() - o2.getTime());
         getUsersList();
         getListOnTop();
         users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
@@ -70,25 +71,8 @@ public class Blitz {
         }
     }
     public static void getUsersList(){
-        boolean isUserTrue = false;
-        Event event;
-        for (int i = 1; i <= events.size(); i++) {
-            event = events.get(events.size() - i);
-            if((users.size() == 0)) {
-                userMap.put(event.getUserId(), users.size());
-                users.add(new User(event.getUserId(), event.getTime()));
-            }
-            else if(users.size() > 0){
-                for (int j = 0; j < users.size(); j++) {
-                    if(users.get(j).getId() == event.getUserId()){
-                        isUserTrue = false;
-                        break;
-                    }
-                    else if(users.get(j).getId() != event.getUserId())
-                        isUserTrue = true;
-                }
-            }
-            if(isUserTrue){
+        for (Event event : events) {
+            if(!userMap.containsKey(event.getUserId())){
                 userMap.put(event.getUserId(), users.size());
                 users.add(new User(event.getUserId(), event.getTime()));
             }
@@ -97,9 +81,9 @@ public class Blitz {
 
     public static void getListOnTop(){
         for (Event event : events) {
-            if(event.getEventType().equals("passed")){
+            if(event.getEventType().equals("passed")) {
                 users.get(userMap.get(event.getUserId())).plusPoint(steps.get(stepMap.get(event.getStepId())).getStepCost());
-                if(users.get(userMap.get(event.getUserId())).getScore() < 24){
+                if (users.get(userMap.get(event.getUserId())).getScore() < 24) {
                     users.get(userMap.get(event.getUserId())).setLastTime(event.getTime());
                 }
             }
