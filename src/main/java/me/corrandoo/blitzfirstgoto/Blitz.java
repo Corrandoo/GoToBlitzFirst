@@ -15,6 +15,7 @@ public class Blitz {
     private static List<Step> steps = new ArrayList<Step>();
     private static List<User> users = new ArrayList<User>();
     private static Map<Integer, Integer> userMap = new HashMap<Integer, Integer>();
+    private static Map<Integer, Integer> stepMap = new HashMap<Integer, Integer>();
 
 
     public static void main(String[] args) {
@@ -57,7 +58,7 @@ public class Blitz {
                 String[] str = s.split(",");
                 int stepId = Integer.parseInt(str[5]);
                 int stepCost = Integer.parseInt(str[8]);
-
+                stepMap.put(stepId, steps.size());
                 steps.add(new Step(stepId, stepCost));
             }
         }
@@ -95,29 +96,11 @@ public class Blitz {
     }
 
     public static void getListOnTop(){
-        Step step;
-        Event event;
-        for (int i = 1; i <= events.size(); i++) {
-            event = events.get(events.size() - i);
-            if (event.getEventType().equals("passed")) {
-                for (int j = 0; j < steps.size(); j++) {
-                    if (event.getStepId() == steps.get(j).getStepId()) {
-                        step = steps.get(j);
-                        for (int k = 0; k < users.size(); k++) {
-                            if (event.getUserId() == users.get(k).getId()) {
-                                if (users.get(k).getScore() < 24) {
-                                    users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                                    users.get(k).setLastTime(event.getTime());
-                                } else if ((users.get(k).getScore() == 24) && !users.get(k).isCompleted()) {
-                                    //users.get(k).setLastTime(event.getTime());
-                                    users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                                    users.get(k).setCompleted(true);
-                                } else if (users.get(k).getScore() >= 24) {
-                                    users.get(k).setScore(users.get(k).getScore() + step.getStepCost());
-                                }
-                            }
-                        }
-                    }
+        for (Event event : events) {
+            if(event.getEventType().equals("passed")){
+                users.get(userMap.get(event.getUserId())).plusPoint(steps.get(stepMap.get(event.getStepId())).getStepCost());
+                if(users.get(userMap.get(event.getUserId())).getScore() < 24){
+                    users.get(userMap.get(event.getUserId())).setLastTime(event.getTime());
                 }
             }
         }
@@ -125,7 +108,7 @@ public class Blitz {
     public static void getTenUsers(){
         int j = 0;
         for (int i = 0; i < users.size(); i++) {
-            if(users.get(i).isCompleted()){
+            if(users.get(i).getScore() >= 24){
                 System.out.print(users.get(i).getId());
                 j++;
                 if(j == 10)

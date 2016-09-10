@@ -57,5 +57,8 @@ public class User {
     public int getFirstTime() {
         return firstTime;
     }
+    public void plusPoint(int point){
+        score += point;
+    }
 }
 
