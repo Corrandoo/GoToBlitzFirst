@@ -8,11 +8,6 @@ public class Step {
         this.stepId = stepId;
         this.stepCost = stepCost;
     }
-
-    public int getStepId() {
-        return stepId;
-    }
-
     public int getStepCost() {
         return stepCost;
     }

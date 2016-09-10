@@ -26,9 +26,8 @@ public class Blitz {
         getListOnTop();
         users.sort((o1, o2) -> o1.getCourseTime() - o2.getCourseTime());
         getTenUsers();
-        getTimeForFuckingNumbers();
     }
-    public static void eventsFileToList(String fileName){
+    private static void eventsFileToList(String fileName){
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
             String s;
@@ -50,7 +49,7 @@ public class Blitz {
             System.out.println("Ошибка при обработке файла лога.");
         }
     }
-    public static void structureFileToList(String fileName){
+    private static void structureFileToList(String fileName){
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
             String s;
@@ -70,7 +69,7 @@ public class Blitz {
             System.out.println("Ошибка при обработке файла структуры курса.");
         }
     }
-    public static void getUsersList(){
+    private static void getUsersList(){
         for (Event event : events) {
             if(!userMap.containsKey(event.getUserId())){
                 userMap.put(event.getUserId(), users.size());
@@ -79,7 +78,7 @@ public class Blitz {
         }
     }
 
-    public static void getListOnTop(){
+    private static void getListOnTop(){
         for (Event event : events) {
             if(event.getEventType().equals("passed")) {
                 users.get(userMap.get(event.getUserId())).plusPoint(steps.get(stepMap.get(event.getStepId())).getStepCost());
@@ -89,7 +88,7 @@ public class Blitz {
             }
         }
     }
-    public static void getTenUsers(){
+    private static void getTenUsers(){
         int j = 0;
         for (int i = 0; i < users.size(); i++) {
             if(users.get(i).getScore() >= 24){
@@ -100,17 +99,6 @@ public class Blitz {
                 System.out.print(",");
             }
 
-        }
-        System.out.println();
-        System.out.println();
-
-    }
-    public static void getTimeForFuckingNumbers(){
-        int j = 0;
-        for (int i = 0; i < users.size(); i++) {
-            if(users.get(i).getId() == 972 || users.get(i).getId() == 4280 || users.get(i).getId() == 1291 ){
-                System.out.println(users.get(i).getId() + " " + users.get(i).getCourseTime() + " " + users.get(i).getFirstTime() + " " + users.get(i).getLastTime());
-            }
         }
     }
 
